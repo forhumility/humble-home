@@ -1,0 +1,95 @@
+<!--
+ * @Author       : Humility
+ * @Date         : 2023-08-03 16:09:19
+ * @LastEditTime : 2023-08-14 09:41:17
+ * @LastEditors  : Humility
+ * @FilePath     : \web-ui\public\webgl\index.html
+ * @Description  : 
+-->
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Unity WebGL Player</title>
+  </head>
+  <body>
+    <canvas id="unity-canvas"></canvas>
+    <script src="Build/Web.loader.js"></script>
+    <script>
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+        const meta = document.createElement("meta");
+        meta.name = "viewport";
+        meta.content =
+          "width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes";
+        document.getElementsByTagName("head")[0].appendChild(meta);
+        console.log("Run in mobile device");
+      } else {
+        console.log("Run in desktop browser");
+      }
+      // 资源配置
+      const config = {
+        dataUrl: "Build/Web.data.br",
+        frameworkUrl: "Build/Web.framework.js.br",
+        codeUrl: "Build/Web.wasm.br",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "HumbleStudio",
+        productName: "HumbleUnityWebGLView",
+        productVersion: "0.1.0",
+        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+      };
+      // 加载事件回调方法
+      const onProgress = (progress) => {
+        window.parent.postMessage(
+          {
+            type: "creatingUnity",
+            progress: (progress * 100).toFixed(0),
+          },
+          "*"
+        );
+      };
+      // 创建Unity实例
+      createUnityInstance(
+        document.querySelector("#unity-canvas"),
+        config,
+        onProgress
+      )
+        .then((unityInstance) => {
+          // 将创建好的Unity实例挂载到window对象下
+          window.unityInstance = unityInstance;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+      /**
+       * @description: 向Unity场景中广播信息
+       * @param {string} obj 场景中的对象名
+       * @param {string} fun 对象挂载脚本的方法名
+       * @param {string|object} msg 要发送信息
+       * @return {void}
+       */
+      function sendMessage(obj, fun, msg) {
+        const message = typeof msg == "string" ? msg : JSON.stringify(msg);
+        window.unityInstance.SendMessage(obj, fun, message);
+      }
+    </script>
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: rgb(0, 0, 10);
+      }
+      #unity-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        background: rgb(0, 0, 10);
+      }
+    </style>
+  </body>
+</html>

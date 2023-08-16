@@ -1,0 +1,47 @@
+/*
+ * @Author       : Humility
+ * @Date         : 2023-08-04 09:44:27
+ * @LastEditTime : 2023-08-04 10:17:05
+ * @LastEditors  : Humility
+ * @FilePath     : \web-ui\src\assets\css\index.css
+ * @Description  : 
+ */
+/* tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* font style */
+@font-face {
+    font-family: 'TTTGB-Medium';
+    src: url('../fonts/TTTGB.eot');
+    src: url('../fonts/TTTGB.eot?#iefix') format('embedded-opentype'), url('../fonts/TTTGB.woff2') format('woff2'), url('../fonts/TTTGB.woff') format('woff'), url('../fonts/TTTGB.ttf') format('truetype'), url('../fonts/TTTGB.svg#TTTGB') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+html,
+body,
+div,
+ul,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+dl,
+dt,
+dd,
+ol,
+form,
+input,
+textarea,
+th,
+td,
+select {
+    font-family: 'TTTGB-Medium';
+}
